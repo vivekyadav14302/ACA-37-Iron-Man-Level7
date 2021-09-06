@@ -2,10 +2,12 @@
 var bg, backgroundImg;
 
 function preload() {
+  // load all images
   backgroundImg = loadImage("images/bg.jpg");
   ironManImg = loadImage("images/iron.png");
   stoneimg = loadImage("images/stone.png");
   diamondImg = loadImage("images/diamond.png");
+  spikesImg = loadImage("images/spikes.png");
 }
 
 function setup() {
@@ -21,10 +23,10 @@ function setup() {
   ironMan = createSprite(100,450,150,40);
   ironMan.addImage(ironManImg);
  ironMan.scale = 0.3
- ironMan.debug = true;
  score = 0
   stoneGroup = new Group();
   diamondGroup = new Group();
+  spikesGroup = new Group();
 }
 
 function draw() {
@@ -71,10 +73,22 @@ for(u = 0; u < (diamondGroup).length; u++){
         score++
     }
 }
+
+  if(frameCount%120 == 0){
+    spikesgen()
+}
+for(w = 0; w < (spikesGroup).length; w++){
+    myspikes = spikesGroup.get(w)
+    if(ironMan.isTouching(myspikes)){
+        myspikes.destroy()
+        score = score-5
+    }
+}
+
     drawSprites();
-    textSize(27)
+    textSize(24)
     fill("white")
-    text("Your Score: " + score, 50, 50)
+    text("Diamonds Collected: " + score, 50, 50)
    
 }
 
@@ -96,4 +110,14 @@ function diamondgen(){
   d.x = random(100,1000)
   d.scale = 0.7
   diamondGroup.add(d)
+}
+
+function spikesgen(){
+  p = createSprite(300,10,200,60);
+  p.addImage(spikesImg)
+  p.velocityY = 5
+  p.lifetime = 230;
+  p.x = random(50,1000)
+  p.scale = 0.7
+  spikesGroup.add(p)
 }
