@@ -25,12 +25,14 @@ function setup() {
   ironMan.addImage(ironManImg);
   ironMan.scale = 0.3
   score = 0
+  gameState = 'Play'
   stoneGroup = new Group();
   diamondGroup = new Group();
   spikesGroup = new Group();
 }
 
 function draw() {
+  if(gameState == 'Play'){
   // game control keys
   if(keyDown("up")){
     ironMan.velocityY = -10;
@@ -90,18 +92,37 @@ for(w = 0; w < (spikesGroup).length; w++){
         score = score-5
     }
 }
-
+  if(score <= -10 || ironMan.y > 610){
+    gameState = 'End';
+  } 
+ 
+}
+  
+  else{
+    bg.velocityY = 0;
+    bg1.velocityY = 0;
+    diamondGroup.setVelocityYEach(0);
+    spikesGroup.setVelocityYEach(0);
+    stoneGroup.setVelocityYEach(0);
+    diamondGroup.setLifetimeYEach(0);
+    spikesGroup.setLifetimeYEach(0);
+    stoneGroup.setLifetimeYEach(0);
+  }
+  
     drawSprites();
+
+   
     // score genrator code
     textSize(24)
     fill("white")
     text("Diamonds Collected: " + score, 50, 50)
    
 }
+
 // stones create function
 function stonegen(){
   s = createSprite(300,10,200,60);
-  s.addImage(stoneimg)
+  s.addImage(stoneimg);
   s.velocityY = 5;
   s.lifetime = 230;
   s.x = random(100,1000)
