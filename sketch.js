@@ -1,5 +1,5 @@
 // load variables
-var bg, backgroundImg;
+var bg, backgroundImg, restart;
 
 function preload() {
   // load all images
@@ -8,6 +8,7 @@ function preload() {
   stoneimg = loadImage("images/stone.png");
   diamondImg = loadImage("images/diamond.png");
   spikesImg = loadImage("images/spikes.png");
+  restartImg = loadImage("images/restart.png")
 }
 
 function setup() {
@@ -32,6 +33,9 @@ function setup() {
 }
 
 function draw() {
+  if(mousePressedOver(restart)){
+    restartFunc();
+}
   if(gameState == 'Play'){
   // game control keys
   if(keyDown("up")){
@@ -94,6 +98,8 @@ for(w = 0; w < (spikesGroup).length; w++){
 }
   if(score <= -10 || ironMan.y > 610){
     gameState = 'End';
+    restart = createSprite(500,300,50,50)
+    restart.addImage(restartImg)
   } 
  
 }
@@ -101,17 +107,17 @@ for(w = 0; w < (spikesGroup).length; w++){
   else{
     bg.velocityY = 0;
     bg1.velocityY = 0;
+    ironMan.velocityY = 0;
     diamondGroup.setVelocityYEach(0);
     spikesGroup.setVelocityYEach(0);
     stoneGroup.setVelocityYEach(0);
-    diamondGroup.setLifetimeYEach(0);
-    spikesGroup.setLifetimeYEach(0);
-    stoneGroup.setLifetimeYEach(0);
+    diamondGroup.setLifetimeEach(0);
+    spikesGroup.setLifetimeEach(0);
+    stoneGroup.setLifetimeEach(0);
   }
   
     drawSprites();
 
-   
     // score genrator code
     textSize(24)
     fill("white")
@@ -148,4 +154,14 @@ function spikesgen(){
   p.x = random(50,1000)
   p.scale = 0.7
   spikesGroup.add(p)
+}
+
+function restartFunc(){
+  gameState = 'Play';
+  stoneGroup.destroyEach();
+  diamondGroup.destroyEach();
+  spikesGroup.destroyEach();
+  score=0;
+  ironMan.y = 250;
+  restart.destroy()
 }
